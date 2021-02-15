@@ -1,11 +1,11 @@
 const express = require('express');
 const app = express();
+const dotenv = require("dotenv");
+dotenv.config();
 const mongoose = require('mongoose');
-const Movie = require('./Model/movie');
+const Movie = require('./Model/movie')
 const port = process.env.PORT || 8080;
-const db = "mongodb+srv://admin:nanihoney@mypresonaldata.6e70y.mongodb.net/movie?retryWrites=true&w=majority";
-
-mongoose.connect(db,{useNewUrlParser: true, useUnifiedTopology: true})
+mongoose.connect(process.env.DB_URL,{useNewUrlParser: true, useUnifiedTopology: true})
 .then(()=>{
     console.log("database is connected")
 })
@@ -14,6 +14,10 @@ mongoose.connect(db,{useNewUrlParser: true, useUnifiedTopology: true})
     console.log("there is an error")
 })
 
+if(process.env.NODE_ENV !== "production"){
+    dotenv.config();
+}
+
 app.use(function(req, res, next) {
     res.header("Access-Control-Allow-Origin", "*"); // update to match the domain you will make the request from
     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
@@ -21,7 +25,7 @@ app.use(function(req, res, next) {
   });
 
 app.get('/', (req, res)=>{
-    res.send('welcome to my api');
+    res.send('Welcome to movie app')
 })
 
 app.get('/movies',async (req, res)=>{
@@ -31,7 +35,7 @@ app.get('/movies',async (req, res)=>{
 
 app.get('/movies/:id', async(req,res)=>{
     const {id} = req.params;
-    const singelMovie = await Movie.findById(id);
+   const singelMovie = await Movie.findById(id);
    res.send(singelMovie);
 })
 
