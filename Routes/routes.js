@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const router = express.Router();
 const Movie = require('../Model/movie')
 
-const db = process.env.DB_URL;
+const db = "mongodb+srv://admin:nanihoney@mypresonaldata.6e70y.mongodb.net/movies?retryWrites=true&w=majority";
 
 mongoose.connect(db,{useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify : false})
 .then(()=>{
@@ -13,6 +13,7 @@ mongoose.connect(db,{useNewUrlParser: true, useUnifiedTopology: true, useFindAnd
     console.log(err);
     console.log("there is an error")
 })
+
 router.get('/',async (req, res)=>{
     try{
         const allMovies = await Movie.find();
@@ -25,11 +26,12 @@ router.get('/',async (req, res)=>{
 })
  
 router.post('/', async (req, res)=>{
-    const {name, hero, category,budject} = (req.body);
+    const {name, hero,image, category,budject} = (req.body);
 
     const newMovie = new Movie({
         name : name,
         hero : hero,
+        image: image,
         category : category,
         budject : budject
     })
@@ -71,9 +73,15 @@ router.patch('/:id', async(req, res)=>{
     try{
 
         const updateMovie = await Movie.findByIdAndUpdate(id,
-             {$set :
-                {name : req.body.name, hero : req.body.hero, budject : req.body.budject, category : req.body.category}   
-             }
+                {$set :
+                    {
+                        name : req.body.name, 
+                        hero : req.body.hero, 
+                        image : req.body.image,
+                        budject : req.body.budject, 
+                        category : req.body.category
+                    }   
+                }
              )
         res.json(updateMovie)
     }

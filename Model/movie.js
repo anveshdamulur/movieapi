@@ -9,6 +9,10 @@ const movieSchema = new mongoose.Schema({
                 type : String,
                 required : true
         },
+        image :{
+                type : String,
+                required :true
+        },
         category:{
                 type : String,
                 enum : ["horror", "sci", "comedy", "triller", "romantic","action"]
