@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const router = express.Router();
 const Movie = require('../Model/movie')
 
-const db = "mongodb+srv://admin:nanihoney@mypresonaldata.6e70y.mongodb.net/movie?retryWrites=true&w=majority";
+const db = process.env.DB_URL;
 
 mongoose.connect(db,{useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify : false})
 .then(()=>{
